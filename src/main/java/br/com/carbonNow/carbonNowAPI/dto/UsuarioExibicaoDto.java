@@ -2,12 +2,12 @@ package br.com.carbonNow.carbonNowAPI.dto;
 
 import br.com.carbonNow.carbonNowAPI.domain.Usuario;
 
-public record UsuarioDto (
+public record UsuarioExibicaoDto(
         Long id,
         String nome,
         String email
 ){
-    public UsuarioDto(Usuario usuario) {
+    public UsuarioExibicaoDto(Usuario usuario) {
         this (
                 usuario.getId(),
                 usuario.getNome(),

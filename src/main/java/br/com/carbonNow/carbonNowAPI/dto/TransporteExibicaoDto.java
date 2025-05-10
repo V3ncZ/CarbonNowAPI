@@ -4,7 +4,7 @@ import br.com.carbonNow.carbonNowAPI.domain.Transporte;
 
 import java.time.LocalDate;
 
-public record TransporteDto(
+public record TransporteExibicaoDto(
         Long idTransporte,
         Long idUsuario,
         String nome,
@@ -14,7 +14,7 @@ public record TransporteDto(
         double emissaoPermitidaIso,
         boolean conformeIso
 ) {
-    public TransporteDto(Transporte transporte) {
+    public TransporteExibicaoDto(Transporte transporte) {
         this(
                 transporte.getIdTransporte(),
                 transporte.getUsuario().getId(),
