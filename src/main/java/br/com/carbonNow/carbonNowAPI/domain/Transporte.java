@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Table(name = "T_CN_TRANSPORTE")
 public class Transporte implements UserDetails {
 
     @Id
@@ -46,6 +47,11 @@ public class Transporte implements UserDetails {
 
     @Column(name = "CONFORME_ISO")
     private boolean coformeIso;
+
+    public boolean isConformeIso() {
+        return this.emissaoDeCarbono <= this.emissaoPermitidaIso;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

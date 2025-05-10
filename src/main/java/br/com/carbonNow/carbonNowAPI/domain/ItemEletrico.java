@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,22 +17,29 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-@Table(name = "T_CN_USUARIO")
-public class Usuario implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_ID_USUARIO")
-    @SequenceGenerator(name = "GEN_ID_USUARIO", sequenceName = "GEN_ID_USUARIO", allocationSize = 1)
-    @Column(name = "ID_USUARIO")
-    private Long id;
+@Table(name = "T_CN_ITEM_ELETRICO")
+public class ItemEletrico implements UserDetails {
 
-    @Column(name = "NOME")
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_ID_ITEM_ELETRICO")
+    @SequenceGenerator(name = "GEN_ID_ITEM_ELETRICO", sequenceName = "GEN_ID_ITEM_ELETRICO", allocationSize = 1)
+    private Long idItemEletrico;
+
+    @ManyToOne()
+    @JoinColumn(name = "ID_USUARIO")
+    private Usuario usuario;
+
+    @Column(name = "NOME_ITEM")
     private String nome;
 
-    @Column(name = "EMAIL")
-    private String email;
+    @Column(name = "CONSUMO_KW")
+    private double consumoEmKw;
 
-    @Column(name = "SENHA")
-    private String senha;
+    @Column(name = "DT_USO")
+    private LocalDate dataUso;
+
+    @Column(name = "EMISSAO_CALCULADA")
+    private double emissaoDeCarbono;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
