@@ -19,6 +19,17 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @GetMapping("/buscarUsuario/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    public Usuario buscarUsuario(@PathVariable String email) {
+        return usuarioService.buscarUsuarioPorEmail(email);
+    }
+
+    @GetMapping("/buscarUsuarioPorId/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UsuarioExibicaoDto buscarUsuarioPorId(@PathVariable Long id) {
+        return usuarioService.buscarUsuarioPorId(id);
+    }
 
     @PostMapping("/cadastrarUsuario")
     @ResponseStatus(HttpStatus.CREATED)

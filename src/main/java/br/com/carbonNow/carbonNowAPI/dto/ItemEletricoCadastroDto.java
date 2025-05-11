@@ -2,7 +2,7 @@ package br.com.carbonNow.carbonNowAPI.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ItemEletricoDto(
+public record ItemEletricoCadastroDto(
         Long idItemEletrico,
         Long idUsuario,
 

@@ -19,6 +19,12 @@ public class TransporteController {
     @Autowired
     private TransporteService transporteService;
 
+    @GetMapping("/buscarTransporte/{nome}")
+    @ResponseStatus(HttpStatus.OK)
+    public Transporte buscarTransporte(@PathVariable String nome) {
+        return transporteService.encontrarTransportePorNome(nome);
+    }
+
     @PostMapping("/cadastrarTransporte")
     @ResponseStatus(HttpStatus.CREATED)
     public TransporteExibicaoDto cadastrarTransporte(TransporteCadastroDto transporteCadastroDto) {
