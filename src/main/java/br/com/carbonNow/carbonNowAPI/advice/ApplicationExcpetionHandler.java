@@ -15,6 +15,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApplicationExcpetionHandler {
 
+    //Metodo chamado quando ocorre um erro de validação atraves da anotação @Valid
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handle(MethodArgumentNotValidException erro) {
@@ -28,6 +29,7 @@ public class ApplicationExcpetionHandler {
         return errors;
     }
 
+    //Metodo chamado quando ocorre um erro de integridade de dados
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public Map<String, String> handle(DataIntegrityViolationException erro) {
