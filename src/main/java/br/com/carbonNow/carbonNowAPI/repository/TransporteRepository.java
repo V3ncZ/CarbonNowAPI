@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface TransporteRepository extends JpaRepository<Transporte, Long> {
-    UserDetails findByName(String name);
+    UserDetails findByNome(String name);
 }

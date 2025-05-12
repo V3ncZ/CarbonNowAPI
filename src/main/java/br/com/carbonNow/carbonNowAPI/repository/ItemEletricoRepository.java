@@ -4,5 +4,5 @@ import br.com.carbonNow.carbonNowAPI.domain.ItemEletrico;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemEletricoRepository extends JpaRepository<ItemEletrico, Long> {
-    ItemEletrico findByName(String name);
+    ItemEletrico findByNome(String nome);
 }

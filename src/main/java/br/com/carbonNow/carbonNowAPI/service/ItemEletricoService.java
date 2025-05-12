@@ -20,7 +20,7 @@ public class ItemEletricoService {
     private ItemEletricoRepository itemEletricoRepository;
 
     public ItemEletrico encontrarPeloNome(String nome) {
-        return itemEletricoRepository.findByName(nome);
+        return itemEletricoRepository.findByNome(nome);
     }
 
     public ItemEletricoExibicaoDto salvarItemEletrico(ItemEletricoCadastroDto itemEletricoCadastroDto) {

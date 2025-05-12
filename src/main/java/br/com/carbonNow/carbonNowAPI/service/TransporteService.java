@@ -19,7 +19,7 @@ public class TransporteService {
     private TransporteRepository transporteRepository;
 
     public Transporte encontrarTransportePorNome(String name) {
-        return (Transporte) transporteRepository.findByName(name);
+        return (Transporte) transporteRepository.findByNome(name);
     }
 
     public TransporteExibicaoDto salvarTransporte(TransporteCadastroDto transporteCadastroDto) {
