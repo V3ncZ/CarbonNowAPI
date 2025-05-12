@@ -9,8 +9,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,19 +23,22 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public UsuarioExibicaoDto salvarUsuario(UsuarioCadastroDto usuarioCadastroDto) {
+
+        String senhaCriptografada = passwordEncoder.encode(usuarioCadastroDto.senha());
 
         //Instanciar um usuario
         Usuario usuario = new Usuario();
 
         //Copiar as propriedades do DTO para o usuario
         BeanUtils.copyProperties(usuarioCadastroDto, usuario);
+        usuario.setSenha(senhaCriptografada);
 
         //Salvar o usuario no banco de dados
-        Usuario usuarioSalvo = usuarioRepository.save(usuario);
-
         //Retornar o DTO com os dados do usuario salvo
-        return new UsuarioExibicaoDto(usuarioSalvo);
+        return new UsuarioExibicaoDto(usuarioRepository.save(usuario));
     }
 
     public void deletarUsuario(Long id) {
@@ -55,6 +63,9 @@ public class UsuarioService {
         if (usuarioOptional.isPresent()) {
             Usuario usuarioExistente = usuarioOptional.get();
             BeanUtils.copyProperties(usuario, usuarioExistente, "id");
+            String senhaCriptografada = passwordEncoder.encode(usuarioExistente.getSenha());
+            usuarioExistente.setSenha(senhaCriptografada);
+
             return usuarioRepository.save(usuarioExistente);
         } else {
             throw new UsuarioNaoEncontradoException("Usuário com Id " + usuario.getId() + " não encontrado");
@@ -73,6 +84,11 @@ public class UsuarioService {
     }
 
     public Usuario buscarUsuarioPorEmail(String email) {
-        return (Usuario) usuarioRepository.findByEmail(email);
+        UserDetails userDetails = usuarioRepository.findByEmail(email);
+        if (userDetails != null && userDetails.isEnabled() && userDetails instanceof Usuario) {
+            return (Usuario) userDetails;
+        } else {
+            throw new UsuarioNaoEncontradoException("Usuario não encontrado");
+        }
     }
 }

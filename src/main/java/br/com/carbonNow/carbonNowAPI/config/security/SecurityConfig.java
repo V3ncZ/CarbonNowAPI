@@ -30,6 +30,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/carbonnow/cadastrarUsuario").permitAll()
+
+                        .requestMatchers(HttpMethod.POST,"/carbonnow/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/carbonnow/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/carbonnow/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/carbonnow/**").hasAnyRole("ADMIN", "USER")
+
                         .anyRequest().authenticated())
                 .addFilterBefore(verificarToken, UsernamePasswordAuthenticationFilter.class)
                 .build();

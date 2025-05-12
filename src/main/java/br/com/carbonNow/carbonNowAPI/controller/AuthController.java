@@ -30,12 +30,14 @@ public class AuthController {
     private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginDto loginDto) {
+    public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginDto loginDto) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(
                 loginDto.email(),
                 loginDto.senha()
         );
 
+        // Essa linha utiliza a implementação da classe user details do nosso obj Usuario, e automaticamente busca no banco
+        // o usuario informado. Com a senha criptografa implementada no registro, ao salvar o usuário
         Authentication auth = authenticationManager.authenticate(usernamePassword);
 
         String token = tokenService.gerarToken((Usuario) auth.getPrincipal());
@@ -46,8 +48,6 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioExibicaoDto registrar(@Valid @RequestBody UsuarioCadastroDto usuarioCadastroDto) {
-        UsuarioExibicaoDto usuarioSalvo = null;
-        usuarioSalvo = usuarioService.salvarUsuario(usuarioCadastroDto);
-        return usuarioSalvo;
+        return usuarioService.salvarUsuario(usuarioCadastroDto);
     }
 }

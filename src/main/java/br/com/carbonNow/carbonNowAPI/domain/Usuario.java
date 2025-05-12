@@ -35,6 +35,7 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE")
     private UsuarioRole role;
 
     @Override
@@ -49,13 +50,14 @@ public class Usuario implements UserDetails {
         }
     }
 
+    // Ambas informações abaixo são obrigatórios para validação de login com senha criptografada
     @Override
     public String getPassword() {
-        return "";
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 }
