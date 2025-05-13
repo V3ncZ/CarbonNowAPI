@@ -1,6 +1,7 @@
 package br.com.carbonNow.carbonNowAPI.service;
 
 import br.com.carbonNow.carbonNowAPI.domain.ItemEletrico;
+import br.com.carbonNow.carbonNowAPI.domain.Usuario;
 import br.com.carbonNow.carbonNowAPI.dto.ItemEletricoCadastroDto;
 import br.com.carbonNow.carbonNowAPI.dto.ItemEletricoExibicaoDto;
 import br.com.carbonNow.carbonNowAPI.exception.ItemEletricoNaoEncontradoException;
@@ -23,10 +24,12 @@ public class ItemEletricoService {
         return itemEletricoRepository.findByNome(nome);
     }
 
-    public ItemEletricoExibicaoDto salvarItemEletrico(ItemEletricoCadastroDto itemEletricoCadastroDto) {
+    public ItemEletricoExibicaoDto salvarItemEletrico(ItemEletricoCadastroDto itemEletricoCadastroDto, Usuario usuario) {
         ItemEletrico itemEletrico = new ItemEletrico();
 
         BeanUtils.copyProperties(itemEletricoCadastroDto, itemEletrico);
+        itemEletrico.setUsuario(usuario);
+
 
         ItemEletrico itemSalvo = itemEletricoRepository.save(itemEletrico);
 

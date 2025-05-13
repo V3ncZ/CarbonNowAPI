@@ -21,9 +21,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // Na versão do spring ele está ignorando valores após o .
-    // Lembrete para informar o email deve se passar %40 no lugar. (Na URL)
-    // Exemplo: http://localhost:8080/carbonnow/buscarUsuario/joaopaulo%40email.com
     @GetMapping("/buscarUsuario/{email}")
     @ResponseStatus(HttpStatus.OK)
     public Usuario buscarUsuario(@PathVariable String email) {

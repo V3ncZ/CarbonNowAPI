@@ -29,7 +29,7 @@ public class TransporteController {
 
     @PostMapping("/cadastrarTransporte")
     @ResponseStatus(HttpStatus.CREATED)
-    public TransporteExibicaoDto cadastrarTransporte(TransporteCadastroDto transporteCadastroDto) {
+    public TransporteExibicaoDto cadastrarTransporte(@Valid @RequestBody TransporteCadastroDto transporteCadastroDto) {
         var usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return transporteService.salvarTransporte(transporteCadastroDto, usuario);
     }

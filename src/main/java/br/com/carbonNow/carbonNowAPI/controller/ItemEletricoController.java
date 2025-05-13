@@ -1,13 +1,16 @@
 package br.com.carbonNow.carbonNowAPI.controller;
 
 import br.com.carbonNow.carbonNowAPI.domain.ItemEletrico;
+import br.com.carbonNow.carbonNowAPI.domain.Usuario;
 import br.com.carbonNow.carbonNowAPI.dto.ItemEletricoCadastroDto;
 import br.com.carbonNow.carbonNowAPI.dto.ItemEletricoExibicaoDto;
 import br.com.carbonNow.carbonNowAPI.service.ItemEletricoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +29,9 @@ public class ItemEletricoController {
 
     @PostMapping("/cadastrarItemEletrico")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemEletricoExibicaoDto cadastrarItemEletrico(ItemEletricoCadastroDto itemEletricoCadastroDto) {
-        return itemEletricoService.salvarItemEletrico(itemEletricoCadastroDto);
+    public ItemEletricoExibicaoDto cadastrarItemEletrico(@Valid @RequestBody ItemEletricoCadastroDto itemEletricoCadastroDto) {
+        var usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return itemEletricoService.salvarItemEletrico(itemEletricoCadastroDto, usuario);
     }
 
     @GetMapping("/listarItensEletricos")
