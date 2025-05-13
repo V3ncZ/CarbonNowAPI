@@ -1,6 +1,7 @@
 package br.com.carbonNow.carbonNowAPI.controller;
 
 import br.com.carbonNow.carbonNowAPI.domain.Transporte;
+import br.com.carbonNow.carbonNowAPI.domain.Usuario;
 import br.com.carbonNow.carbonNowAPI.dto.TransporteCadastroDto;
 import br.com.carbonNow.carbonNowAPI.dto.TransporteExibicaoDto;
 import br.com.carbonNow.carbonNowAPI.service.TransporteService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +30,8 @@ public class TransporteController {
     @PostMapping("/cadastrarTransporte")
     @ResponseStatus(HttpStatus.CREATED)
     public TransporteExibicaoDto cadastrarTransporte(TransporteCadastroDto transporteCadastroDto) {
-        return transporteService.salvarTransporte(transporteCadastroDto);
+        var usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return transporteService.salvarTransporte(transporteCadastroDto, usuario);
     }
 
     @GetMapping("/listarTransportes")

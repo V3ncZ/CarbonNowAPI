@@ -8,11 +8,11 @@ public record TransporteExibicaoDto(
         Long idTransporte,
         Long idUsuario,
         String nome,
-        double distanciaEmKm,
+        Double distanciaEmKm,
         LocalDate dataDeUso,
-        double emissaoDeCarbono,
-        double emissaoPermitidaIso,
-        boolean conformeIso
+        Double emissaoDeCarbono,
+        Double emissaoPermitidaIso,
+        Boolean conformeIso
 ) {
     public TransporteExibicaoDto(Transporte transporte) {
         this(

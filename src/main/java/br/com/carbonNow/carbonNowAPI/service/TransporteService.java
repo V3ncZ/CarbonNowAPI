@@ -1,5 +1,6 @@
 package br.com.carbonNow.carbonNowAPI.service;
 import br.com.carbonNow.carbonNowAPI.domain.Transporte;
+import br.com.carbonNow.carbonNowAPI.domain.Usuario;
 import br.com.carbonNow.carbonNowAPI.dto.TransporteCadastroDto;
 import br.com.carbonNow.carbonNowAPI.dto.TransporteExibicaoDto;
 import br.com.carbonNow.carbonNowAPI.exception.TransporteNaoEncontradoException;
@@ -22,10 +23,11 @@ public class TransporteService {
         return (Transporte) transporteRepository.findByNome(name);
     }
 
-    public TransporteExibicaoDto salvarTransporte(TransporteCadastroDto transporteCadastroDto) {
+    public TransporteExibicaoDto salvarTransporte(TransporteCadastroDto transporteCadastroDto, Usuario usuario) {
         Transporte transporte = new Transporte();
 
         BeanUtils.copyProperties(transporteCadastroDto, transporte);
+        transporte.setUsuario(usuario);
 
         Transporte transporteSalvo = transporteRepository.save(transporte);
 

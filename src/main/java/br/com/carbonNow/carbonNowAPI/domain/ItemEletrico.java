@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @Table(name = "T_CN_ITEM_ELETRICO")
-public class ItemEletrico implements UserDetails {
+public class ItemEletrico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_ID_ITEM_ELETRICO")
@@ -33,26 +33,12 @@ public class ItemEletrico implements UserDetails {
     private String nome;
 
     @Column(name = "CONSUMO_KW")
-    private double consumoEmKw;
+    private Double consumoEmKw;
 
     @Column(name = "DT_USO")
     private LocalDate dataUso;
 
     @Column(name = "EMISSAO_CALCULADA")
-    private double emissaoDeCarbono;
+    private Double emissaoDeCarbono;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-        return "";
-    }
-
-    @Override
-    public String getUsername() {
-        return "";
-    }
 }

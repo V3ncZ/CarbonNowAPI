@@ -18,13 +18,13 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @Table(name = "T_CN_TRANSPORTE")
-public class Transporte implements UserDetails {
+public class Transporte{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_ID_TRANSPORTE")
     @SequenceGenerator(name = "GEN_ID_TRANSPORTE", sequenceName = "GEN_ID_TRANSPORTE", allocationSize = 1)
     @Column(name = "ID_TRANSPORTE")
-    private long idTransporte;
+    private Long idTransporte;
 
     @ManyToOne()
     @JoinColumn(name = "ID_USUARIO")
@@ -34,37 +34,22 @@ public class Transporte implements UserDetails {
     private String nome;
 
     @Column(name = "DISTANCIA_KM")
-    private double distanciaEmKm;
+    private Double distanciaEmKm;
 
     @Column(name = "DT_USO")
     private LocalDate dataDeUso;
 
     @Column(name = "EMISSAO_CALCULADA")
-    private double emissaoDeCarbono;
+    private Double emissaoDeCarbono;
 
     @Column(name = "EMISSAO_PERMITIDA_ISO")
-    private double emissaoPermitidaIso;
+    private Double emissaoPermitidaIso;
 
     @Column(name = "CONFORME_ISO")
-    private boolean coformeIso;
+    private Boolean coformeIso;
 
     public boolean isConformeIso() {
         return this.emissaoDeCarbono <= this.emissaoPermitidaIso;
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-        return "";
-    }
-
-    @Override
-    public String getUsername() {
-        return "";
-    }
 }

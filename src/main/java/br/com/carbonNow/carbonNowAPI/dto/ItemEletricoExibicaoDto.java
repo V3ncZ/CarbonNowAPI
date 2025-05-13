@@ -2,13 +2,15 @@ package br.com.carbonNow.carbonNowAPI.dto;
 
 import br.com.carbonNow.carbonNowAPI.domain.ItemEletrico;
 
+import java.time.LocalDate;
+
 public record ItemEletricoExibicaoDto(
         Long idItemEletrico,
         Long idUsuario,
         String nome,
-        double consumoEmKw,
-        String dataUso,
-        double emissaoDeCarbono
+        Double consumoEmKw,
+        LocalDate dataUso,
+        Double emissaoDeCarbono
 ) {
     public ItemEletricoExibicaoDto(ItemEletrico itemEletrico) {
         this(
@@ -16,7 +18,7 @@ public record ItemEletricoExibicaoDto(
                 itemEletrico.getUsuario().getId(),
                 itemEletrico.getNome(),
                 itemEletrico.getConsumoEmKw(),
-                itemEletrico.getDataUso().toString(),
+                itemEletrico.getDataUso(),
                 itemEletrico.getEmissaoDeCarbono()
         );
     }

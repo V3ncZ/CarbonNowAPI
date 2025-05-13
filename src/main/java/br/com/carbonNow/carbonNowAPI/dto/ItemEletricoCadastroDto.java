@@ -2,6 +2,8 @@ package br.com.carbonNow.carbonNowAPI.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
+
 public record ItemEletricoCadastroDto(
         Long idItemEletrico,
         Long idUsuario,
@@ -10,12 +12,12 @@ public record ItemEletricoCadastroDto(
         String nome,
 
         @NotBlank(message = "Consumo não pode ser vazio")
-        double consumoEmKw,
+        Double consumoEmKw,
 
         @NotBlank(message = "Data de uso não pode ser vazio")
-        String dataUso,
+        LocalDate dataUso,
 
         @NotBlank(message = "Emissão de carbono não pode ser vazio")
-        double emissaoDeCarbono
+        Double emissaoDeCarbono
 ) {
 }

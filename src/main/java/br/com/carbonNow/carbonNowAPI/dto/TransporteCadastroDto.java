@@ -1,6 +1,8 @@
 package br.com.carbonNow.carbonNowAPI.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
@@ -11,19 +13,19 @@ public record TransporteCadastroDto(
         @NotBlank(message = "O nome do transporte não pode ser vazio")
         String nome,
 
-        @NotBlank(message = "A distância não pode ser vazia")
-        double distanciaEmKm,
+        @Positive(message = "A distância tem que ser maior que zero")
+        Double distanciaEmKm,
 
-        @NotBlank(message = "A data de uso não pode ser vazia")
+        @NotNull(message = "A data de uso não pode ser vazia")
         LocalDate dataDeUso,
 
-        @NotBlank(message = "A emissão de carbono não pode ser vazia")
-        double emissaoDeCarbono,
+        @Positive(message = "A emissão de carbono não pode ser vazia")
+        Double emissaoDeCarbono,
 
-        @NotBlank(message = "A emissão permitida ISO não pode ser vazia")
-        double emissaoPermitidaIso,
+        @Positive(message = "A emissão permitida ISO não pode ser vazia")
+        Double emissaoPermitidaIso,
 
-        @NotBlank(message = "O campo conforme ISO não pode ser vazio")
-        boolean conformeIso
+        @NotNull(message = "O campo conforme ISO não pode ser vazio")
+        Boolean conformeIso
 ) {
 }
