@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class VerificarToken extends OncePerRequestFilter {
@@ -23,27 +24,56 @@ public class VerificarToken extends OncePerRequestFilter {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    // Lista de paths públicos (prefixos)
+    private static final List<String> PATHS_PUBLICOS = List.of(
+            "/swagger-ui",
+            "/v3/api-docs",
+            "/swagger-resources",
+            "/configuration",
+            "/webjars",
+            "/auth/login",
+            "/auth/register"
+    );
+
     public VerificarToken(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+
+        // Debug para verificar URLs
+        System.out.println("Request URI: " + path);
+
+        boolean isPathPublico = PATHS_PUBLICOS.stream()
+                .anyMatch(path::startsWith);
+
+        if (isPathPublico) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authorizationHeader = request.getHeader("Authorization");
-        String token = "";
-
-        if (authorizationHeader == null) {
-            token = null;
-        } else {
-            token = authorizationHeader.replace("Bearer", "").trim();
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7).trim();
             String login = tokenService.validarToken(token);
+
             UserDetails usuario = usuarioRepository.findByEmail(login);
-
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            if (usuario != null) {
+                var authenticationToken = new UsernamePasswordAuthenticationToken(
+                        usuario, null, usuario.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+        } else {
+            // Se não tiver token e não for caminho público, pode já devolver 401 aqui
+            // ou deixar passar e o Spring Security rejeitar depois.
         }
+
         filterChain.doFilter(request, response);
-        }
+    }
+
 }

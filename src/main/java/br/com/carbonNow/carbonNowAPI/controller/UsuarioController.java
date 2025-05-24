@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 // A marcação precisa ser RestController para conseguirmos enviar um retorno de OBJ, caso contrário
-// O spring irá tratar esse controler como modelo MVC tentando retornar um HTML por exemplo
+// O spring ira tratar esse controler como modelo MVC tentando retornar um HTML por exemplo
 @RestController
 @RequestMapping("/carbonnow")
 public class UsuarioController {
