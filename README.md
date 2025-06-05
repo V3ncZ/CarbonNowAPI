@@ -1,5 +1,3 @@
-# CarbonNowAPI
-
 # 🌱 CarbonNowAPI
 
 **CarbonNowAPI** é uma API desenvolvida com **Spring Boot** que tem como objetivo, no futuro, realizar cálculos de pegada de carbono. Atualmente, o projeto está na fase de estruturação, contendo os principais endpoints, autenticação com JWT e toda a base pronta para evoluir.
