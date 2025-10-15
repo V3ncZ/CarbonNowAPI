@@ -24,13 +24,13 @@ public class VerificarToken extends OncePerRequestFilter {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // Lista de paths públicos (prefixos)
+    // Lista de paths públicos (com barras no final para prefixos)
     private static final List<String> PATHS_PUBLICOS = List.of(
-            "/swagger-ui",
-            "/v3/api-docs",
-            "/swagger-resources",
-            "/configuration",
-            "/webjars",
+            "/swagger-ui/",
+            "/v3/api-docs/",
+            "/swagger-resources/",
+            "/configuration/",
+            "/webjars/",
             "/auth/login",
             "/auth/register"
     );
@@ -45,11 +45,12 @@ public class VerificarToken extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
 
-        // Debug para verificar URLs
-        System.out.println("Request URI: " + path);
+        // Log opcional para debug
+        // System.out.println("Requisição para path: " + path);
 
+        // Se a requisição começa com algum path público, libera direto
         boolean isPathPublico = PATHS_PUBLICOS.stream()
-                .anyMatch(path::startsWith);
+                .anyMatch(publicPath -> path.startsWith(publicPath));
 
         if (isPathPublico) {
             filterChain.doFilter(request, response);
@@ -69,11 +70,10 @@ public class VerificarToken extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         } else {
-            // Se não tiver token e não for caminho público, pode já devolver 401 aqui
-            // ou deixar passar e o Spring Security rejeitar depois.
+            // Se não houver token e não for path público, pode bloquear ou permitir seguir
+            // Normalmente bloqueia, mas deixamos a autorização por SecurityConfig
         }
 
         filterChain.doFilter(request, response);
     }
-
 }
