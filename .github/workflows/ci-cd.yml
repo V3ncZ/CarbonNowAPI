@@ -1,0 +1,111 @@
+name: CI/CD - CarbonNowAPI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main", "staging", "production" ]
+
+env:
+  MAVEN_OPTS: -Xmx1024m
+
+jobs:
+  build-and-test:
+    name: Build & Test (Maven)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+          cache: 'maven'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Build and run tests
+        run: mvn -B clean test package
+
+      - name: Upload build artifact (for debugging)
+        uses: actions/upload-artifact@v4
+        with:
+          name: target-jar
+          path: target/*.jar
+
+  docker-build-and-push:
+    name: Build Docker image & Push
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ${{ secrets.venzz }}/carbonnowapi
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.venzz }}
+          password: ${{ secrets.dckr_pat_6RIY_DLqlrWOiPwsM3omKS8iZUs }}
+
+      - name: Build Docker image
+        run: |
+          TAG=latest
+          if [ "${{ github.ref }}" = "refs/heads/staging" ]; then TAG=staging; fi
+          if [ "${{ github.ref }}" = "refs/heads/production" ]; then TAG=prod; fi
+          docker build -t $IMAGE_NAME:$TAG .
+          echo "Built $IMAGE_NAME:$TAG"
+
+      - name: Push Docker image
+        run: |
+          TAG=latest
+          if [ "${{ github.ref }}" = "refs/heads/staging" ]; then TAG=staging; fi
+          if [ "${{ github.ref }}" = "refs/heads/production" ]; then TAG=prod; fi
+          docker push $IMAGE_NAME:$TAG
+
+  deploy-staging:
+    name: Deploy to Staging (Azure Web App)
+    needs: docker-build-and-push
+    if: github.ref == 'refs/heads/staging' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Azure Web App (staging)
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME_STAGING }}     # nome do App Service de staging
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_STAGING }}
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/carbonnowapi:staging
+
+  deploy-production:
+    name: Deploy to Production (Azure Web App)
+    needs: docker-build-and-push
+    if: github.ref == 'refs/heads/production'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ secrets.AZURE_WEBAPP_URL_PROD }}   # opcional, para o ambiente
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Wait for manual approval (GitHub Environment)
+        run: echo "Deployment to production will proceed after environment approval."
+
+      - name: Deploy to Azure Web App (production)
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME_PROD }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PROD }}
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/carbonnowapi:prod
