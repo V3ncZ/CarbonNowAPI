@@ -21,8 +21,7 @@ import java.util.List;
 public class Transporte{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_ID_TRANSPORTE")
-    @SequenceGenerator(name = "GEN_ID_TRANSPORTE", sequenceName = "GEN_ID_TRANSPORTE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_TRANSPORTE")
     private Long idTransporte;
 

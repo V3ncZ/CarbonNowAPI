@@ -17,8 +17,7 @@ import java.time.LocalDate;
 public class ItemEletrico {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_ID_ITEM")
-    @SequenceGenerator(name = "GEN_ID_ITEM", sequenceName = "GEN_ID_ITEM", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ITEM")
     private Long idItemEletrico;
 
