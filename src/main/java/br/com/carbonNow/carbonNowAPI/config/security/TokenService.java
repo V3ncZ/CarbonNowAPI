@@ -4,7 +4,7 @@ import br.com.carbonNow.carbonNowAPI.domain.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.JWTVerificationException; // Importante
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import static org.springframework.security.config.Elements.JWT;
+// Removido o import estático 'org.springframework.security.config.Elements.JWT'
+// pois não era usado e gerava confusão com 'com.auth0.jwt.JWT'
 
 @Service
 public class TokenService {
@@ -35,18 +36,21 @@ public class TokenService {
         }
     }
 
-    public String validarToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(palavraSecreta);
-            return com.auth0.jwt.JWT
-                    .require(algorithm)
-                    .withIssuer("usuario")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (JWTVerificationException e) {
-            return "";
-        }
+    /**
+     * Valida o token e retorna o "subject" (email) se for válido.
+     * Lança uma JWTVerificationException se o token for inválido
+     * (expirado, assinatura errada, etc.)
+     */
+    public String getSubject(String token) throws JWTVerificationException {
+        // Não precisamos de try-catch aqui.
+        // Deixamos a exceção subir para quem chamou (o Filtro)
+        Algorithm algorithm = Algorithm.HMAC256(palavraSecreta);
+        return com.auth0.jwt.JWT
+                .require(algorithm)
+                .withIssuer("usuario")
+                .build()
+                .verify(token) // Isso lança a exceção se falhar
+                .getSubject();
     }
 
     public Instant gerarDataDeExpiracao() {

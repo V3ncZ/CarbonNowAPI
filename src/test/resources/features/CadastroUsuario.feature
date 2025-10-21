@@ -10,7 +10,7 @@
       Dado que eu tenha os seguintes dados do usuário:
         | campo     | valor                   |
         | nome      | Vinicius Cesar          |
-        | email     | viniciuscesar@gmail.com |
+        | email     | vin@gmail.com |
         | senha     | Mudar@123456            |
         | role      | ADMIN                   |
       Quando  eu enviar a requisição para o endpoint "/cadastrarUsuario" de cadastrar usuario
