@@ -6,12 +6,12 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import static io.restassured.RestAssured.given;
 
 @Service
-
 public class CadastroUsuarioService {
 
     private static final String BASE_URL = "http://localhost:8080/carbonnow";
@@ -27,6 +27,19 @@ public class CadastroUsuarioService {
                 .body(usuarioCadastroDto)
                 .when()
                 .post(BASE_URL + endpoint)
+                .then()
+                .extract()
+                .response();
+    }
+
+    public Response excluirUsuario(Long id) {
+        String token = Hook.getToken();
+        return RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + token)
+                .when()
+                .delete(BASE_URL + "/deletarUsuario/" + id)
                 .then()
                 .extract()
                 .response();

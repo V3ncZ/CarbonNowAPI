@@ -3,6 +3,7 @@ package br.com.carbonNow.carbonNowAPI.steps;
 import br.com.carbonNow.carbonNowAPI.domain.UsuarioRole;
 import br.com.carbonNow.carbonNowAPI.dto.UsuarioCadastroDto;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
 import io.cucumber.java.es.Dado;
 import io.cucumber.java.it.Quando;
 import io.cucumber.java.pt.Então;
@@ -18,16 +19,11 @@ import java.util.Map;
 @SpringBootTest
 public class CadastroUsuarioSteps {
 
-
     private final CadastroUsuarioService cadastroUsuarioService = new CadastroUsuarioService();
 
     private UsuarioCadastroDto usuarioCadastroDto;
     private Response response;
 
-//    @Autowired
-//    public CadastroUsuarioSteps(CadastroUsuarioService cadastroUsuarioService) {
-//        this.cadastroUsuarioService = cadastroUsuarioService;
-//    }
 
     @Dado("que eu tenha os seguintes dados do usuário:")
     public void QueEuTenhaOsSeguintesDadosDoUsuario(DataTable dataTable) {
@@ -49,6 +45,15 @@ public class CadastroUsuarioSteps {
     @Então("o status code da resposta deve ser {int}")
     public void OStatusCodeDaRespostaDeDadosDeUsuario(int statusCode) {
         Assert.assertEquals(statusCode, response.getStatusCode());
+    }
+
+    @After
+    public void limparDados() {
+        if (response != null && response.getStatusCode() == 201) {
+            Long id = response.jsonPath().getLong("id");
+            cadastroUsuarioService.excluirUsuario(id);
+        }
+        System.out.println("Limpando dados de teste...");
     }
 
 }
