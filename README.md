@@ -12,12 +12,15 @@
 - H2 Database (para testes locais)
 - Swagger/OpenAPI (documentação)
 - Maven
+- Cucumber
+- Rest Assured
 
 ## 🏗️ Status do projeto
 
 ✅ Estruturação inicial  
 ✅ Autenticação com JWT  
 ✅ CRUD básico de entidades  
+✅ Testes Unitarios aplicando BDD
 ✅ Documentação via Swagger  
 🔜 Futuro: Implementação dos cálculos de emissão de CO₂
 
@@ -27,6 +30,7 @@
 - 🧾 Endpoints organizados por contexto
 - 🔐 Segurança aplicada nas rotas
 - 🗂️ Documentação da API disponível no Swagger
+- 🗂️ Testes com BDD para validações de comportamento
 
 ## 🚀 Como executar o projeto localmente
 
@@ -48,6 +52,18 @@ Ou via terminal:
 - API: http://localhost:8080
 - Swagger UI: http://localhost:8080/swagger-ui/index.html
 
+## 🐳 Como executar o projeto DockerFile
+
+### 1. Execute o seguinte comando para criar a imagem do projeto
+```bash
+docker build -t carbon-now-api .
+```
+
+### 2. Agora execute o container a partir da imagem criada
+```bash
+docker run -d --name carbonnow -p 8080:8080 carbon-now-api
+```
+
 ## 🔐 Autenticação
 - Acesse o endpoint /auth/login e envie suas credenciais.
 - O retorno será um token JWT.
@@ -61,18 +77,30 @@ Agora você pode acessar os endpoints protegidos.
 ## 📂 Estrutura do projeto
 
 ```bash
-Copiar
-Editar
 src
- └── main
-     └── java
-         └── com.v3ncz.carbonnowapi
-             ├── controllers
-             ├── models
-             ├── repositories
-             ├── security
-             ├── services
-             └── CarbonNowApiApplication.java
+├── main
+│   └── java
+│       └── br.com.carbonNow.carbonNowAPI
+│           ├── advice
+│           ├── config.security
+│           ├── controller
+│           ├── domain
+│           ├── dto
+│           ├── exception
+│           ├── repository
+│           ├── service
+│           └── CarbonNowApiApplication.java
+└── test
+    ├── java
+    │   └── br.com.carbonNow.carbonNowAPI
+    │       ├── config
+    │       ├── hook
+    │       ├── runner
+    │       ├── service
+    │       └── steps
+    └── resources
+        ├── features
+        └── schemas
 ```
 
 ## 📜 Documentação dos endpoints
