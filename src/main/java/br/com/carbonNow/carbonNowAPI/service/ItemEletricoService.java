@@ -9,6 +9,7 @@ import br.com.carbonNow.carbonNowAPI.repository.ItemEletricoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,10 @@ public class ItemEletricoService {
     }
 
     public Page<ItemEletricoExibicaoDto> listarItensEletricos(Pageable pageable) {
+        pageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize()
+        );
         return itemEletricoRepository.findAll(pageable)
                 .map(ItemEletricoExibicaoDto::new);
     }

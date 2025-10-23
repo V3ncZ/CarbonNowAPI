@@ -1,0 +1,83 @@
+{
+	"definitions": {},
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://example.com/object1761258608.json",
+	"title": "Root",
+	"type": "object",
+	"required": [
+		"idTransporte",
+		"nome",
+		"distanciaEmKm",
+		"dataDeUso",
+		"emissaoDeCarbono",
+		"emissaoPermitidaIso",
+		"conformeIso"
+	],
+	"properties": {
+		"idTransporte": {
+			"$id": "#root/idTransporte",
+			"title": "Idtransporte",
+			"type": "integer",
+			"examples": [
+				11
+			],
+			"default": 0
+		},
+		"nome": {
+			"$id": "#root/nome",
+			"title": "Nome",
+			"type": "string",
+			"default": "",
+			"examples": [
+				"Carro"
+			],
+			"pattern": "^.*$"
+		},
+		"distanciaEmKm": {
+			"$id": "#root/distanciaEmKm",
+			"title": "Distanciaemkm",
+			"type": "integer",
+			"examples": [
+				100
+			],
+			"default": 0
+		},
+		"dataDeUso": {
+			"$id": "#root/dataDeUso",
+			"title": "Datadeuso",
+			"type": "string",
+			"default": "",
+			"examples": [
+				"2025-12-12"
+			],
+			"pattern": "^.*$"
+		},
+		"emissaoDeCarbono": {
+			"$id": "#root/emissaoDeCarbono",
+			"title": "Emissaodecarbono",
+			"type": "integer",
+			"examples": [
+				100
+			],
+			"default": 0
+		},
+		"emissaoPermitidaIso": {
+			"$id": "#root/emissaoPermitidaIso",
+			"title": "Emissaopermitidaiso",
+			"type": "integer",
+			"examples": [
+				100
+			],
+			"default": 0
+		},
+		"conformeIso": {
+			"$id": "#root/conformeIso",
+			"title": "Conformeiso",
+			"type": "boolean",
+			"examples": [
+				true
+			],
+			"default": true
+		}
+	}
+}

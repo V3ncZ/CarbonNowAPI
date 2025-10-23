@@ -8,6 +8,7 @@ import br.com.carbonNow.carbonNowAPI.repository.TransporteRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,10 @@ public class TransporteService {
     }
 
     public Page<TransporteExibicaoDto> listarTransportes(Pageable pageable) {
+        pageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize()
+        );
         return transporteRepository.findAll(pageable)
                 .map(TransporteExibicaoDto::new);
     }

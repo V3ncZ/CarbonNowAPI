@@ -1,0 +1,63 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1761258853.json",
+  "title": "Root",
+  "type": "object",
+  "required": [
+    "idUsuario",
+    "nome",
+    "consumoEmKw",
+    "dataUso",
+    "emissaoDeCarbono"
+  ],
+  "properties": {
+    "idUsuario": {
+      "$id": "#root/idUsuario",
+      "title": "Idusuario",
+      "type": "integer",
+      "examples": [
+        12
+      ],
+      "default": 0
+    },
+    "nome": {
+      "$id": "#root/nome",
+      "title": "Nome",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "Forno"
+      ],
+      "pattern": "^.*$"
+    },
+    "consumoEmKw": {
+      "$id": "#root/consumoEmKw",
+      "title": "Consumoemkw",
+      "type": "integer",
+      "examples": [
+        10
+      ],
+      "default": 0
+    },
+    "dataUso": {
+      "$id": "#root/dataUso",
+      "title": "Datauso",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "2025-10-23"
+      ],
+      "pattern": "^.*$"
+    },
+    "emissaoDeCarbono": {
+      "$id": "#root/emissaoDeCarbono",
+      "title": "Emissaodecarbono",
+      "type": "integer",
+      "examples": [
+        10
+      ],
+      "default": 0
+    }
+  }
+}

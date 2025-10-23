@@ -8,7 +8,10 @@ import br.com.carbonNow.carbonNowAPI.repository.UsuarioRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,6 +56,11 @@ public class UsuarioService {
     }
 
     public Page<UsuarioExibicaoDto> listarUsuarios(Pageable pageable) {
+
+        pageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize()
+        );
         return usuarioRepository.findAll(pageable)
                 .map(UsuarioExibicaoDto::new);
     }

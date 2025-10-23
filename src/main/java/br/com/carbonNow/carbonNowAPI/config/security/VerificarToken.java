@@ -49,7 +49,6 @@ public class VerificarToken extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7).trim();
 
             try {
-                // 👇 MUDANÇA AQUI: Uma única chamada que valida e obtém o login
                 String login = tokenService.getSubject(token);
 
                 UserDetails usuario = usuarioRepository.findByEmail(login);
@@ -62,7 +61,6 @@ public class VerificarToken extends OncePerRequestFilter {
             } catch (JWTVerificationException e) {
                 // Token inválido (expirado, assinatura incorreta, etc.)
                 System.out.println("Token inválido: " + e.getMessage());
-                // Apenas segue em frente sem autenticar.
             }
         }
 
