@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 
 public record TransporteCadastroDto(
-        Long idTransporte,
+
         Long idUsuario,
 
         @NotBlank(message = "O nome do transporte não pode ser vazio")

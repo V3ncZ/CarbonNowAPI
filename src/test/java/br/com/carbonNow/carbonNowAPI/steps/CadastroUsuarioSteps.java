@@ -2,19 +2,25 @@ package br.com.carbonNow.carbonNowAPI.steps;
 
 import br.com.carbonNow.carbonNowAPI.domain.UsuarioRole;
 import br.com.carbonNow.carbonNowAPI.dto.UsuarioCadastroDto;
+import com.networknt.schema.ValidationMessage;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
+import io.cucumber.java.bs.A;
 import io.cucumber.java.es.Dado;
 import io.cucumber.java.it.Quando;
+import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.restassured.response.Response;
+import org.json.JSONException;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import br.com.carbonNow.carbonNowAPI.service.CadastroUsuarioService;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 @SpringBootTest
 public class CadastroUsuarioSteps {
@@ -42,10 +48,22 @@ public class CadastroUsuarioSteps {
         response = cadastroUsuarioService.cadastrarUsuario(usuarioCadastroDto, endpoint);
     }
 
-    @Então("o status code da resposta deve ser {int}")
+    @Então("o status code da resposta de usuario deve ser {int}")
     public void OStatusCodeDaRespostaDeDadosDeUsuario(int statusCode) {
         Assert.assertEquals(statusCode, response.getStatusCode());
     }
+
+    @E("o arquivo de contrato esperado é o {string}")
+    public void oCorpoDaRespostaDeveSeguirOSchema(String schemaPath) throws IOException, JSONException {
+        cadastroUsuarioService.setContract(schemaPath);
+    }
+
+    @Então("a resposta da requisição deve estar em conformidade com o contrato selecionado")
+    public void aRespostaDaRequisiçãoDeveEstarEmConformidadeComOContratoSelecionado() throws IOException, JSONException {
+        Set<ValidationMessage> validateResponse = cadastroUsuarioService.validateResponseAgainstSchema(response);
+        Assert.assertTrue("O contrato está inválido!. Erros encontrados: " + validateResponse, validateResponse.isEmpty());
+    }
+
 
     @After
     public void limparDados() {

@@ -10,20 +10,16 @@ import com.networknt.schema.ValidationMessage;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
-
-@Service
-public class CadastroUsuarioService {
+public class CadastroTransporteService {
 
     private static final String BASE_URL = "http://localhost:8080/carbonnow";
 
@@ -33,15 +29,13 @@ public class CadastroUsuarioService {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-
-
-    public Response cadastrarUsuario(Object usuarioCadastroDto, String endpoint) {
+    public Response cadastrarTransporte(Object transporteCadastroDto, String endpoint) {
         String token = Hook.getToken();
         return RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)
-                .body(usuarioCadastroDto)
+                .body(transporteCadastroDto)
                 .when()
                 .post(BASE_URL + endpoint)
                 .then()
@@ -49,14 +43,14 @@ public class CadastroUsuarioService {
                 .response();
     }
 
-    public Response excluirUsuario(Long id) {
+    public Response excluirTransporte(Long id) {
         String token = Hook.getToken();
         return RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .delete(BASE_URL + "/deletarUsuario/" + id)
+                .delete(BASE_URL + "/deletarTransporte/" + id)
                 .then()
                 .extract()
                 .response();
@@ -75,7 +69,7 @@ public class CadastroUsuarioService {
 
     public void setContract(String contract) throws IOException, JSONException {
         switch (contract) {
-            case "Cadastro de usuario bem sucedido" -> jsonSchema = loadJsonFromFile(schemasPath + "cadastro-usuario-schema.json");
+            case "Cadastro de transporte bem sucedido" -> jsonSchema = loadJsonFromFile(schemasPath + "cadastro-transporte-schema.json");
             default -> throw new IllegalStateException("Unexpected contract" + contract);
         }
     }

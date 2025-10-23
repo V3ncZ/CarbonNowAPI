@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 
 public record ItemEletricoCadastroDto(
-        Long idItemEletrico,
         Long idUsuario,
 
         @NotBlank(message = "Nome não pode ser vazio")

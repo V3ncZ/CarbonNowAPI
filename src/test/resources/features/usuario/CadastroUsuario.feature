@@ -10,8 +10,10 @@
       Dado que eu tenha os seguintes dados do usuário:
         | campo     | valor                   |
         | nome      | Vinicius Cesar          |
-        | email     | vin@gmail.com |
+        | email     | vin@gmail.com           |
         | senha     | Mudar@123456            |
         | role      | ADMIN                   |
       Quando  eu enviar a requisição para o endpoint "/cadastrarUsuario" de cadastrar usuario
-      Então o status code da resposta deve ser 201
+      Então o status code da resposta de usuario deve ser 201
+      E o arquivo de contrato esperado é o "Cadastro de usuario bem sucedido"
+      Então a resposta da requisição deve estar em conformidade com o contrato selecionado
